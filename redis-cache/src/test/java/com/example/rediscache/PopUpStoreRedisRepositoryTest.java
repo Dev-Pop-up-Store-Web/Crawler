@@ -18,19 +18,20 @@ public class PopUpStoreInfoRepositoryTest {
 
 	@Test
 	void saveTest() {
-		PopUpStoreInfo store = new PopUpStoreInfo(0L, "경희대학교", "용인", "경기도 용인시 어쩌구 저쩌구", "경희대인스타", "경희대닷컴", 0,
+		PopUpStoreInfo store = new PopUpStoreInfo(1L, "경희대학교", "용인", "경기도 용인시 어쩌구 저쩌구", "경희대인스타", "경희대닷컴", 0,
 			LocalDate.now(), null, LocalTime.now(), null, true);
 
 		repo.save(store);
 		repo.findById(store.getId());
 		repo.count();
-		// repo.delete(store);
+		repo.delete(store);
 	}
 
 	@Test
 	void getTest() {
-		System.out.println("getTest");
-		repo.findById(0L).ifPresent(System.out::println);
+		System.out.println("--------------\nStart *getTest*\n--------------");
+		repo.findById(1L).ifPresent(System.out::println);
+		System.out.println("--------------");
 		// repo.findAll().forEach(System.out::println);
 	}
 }
