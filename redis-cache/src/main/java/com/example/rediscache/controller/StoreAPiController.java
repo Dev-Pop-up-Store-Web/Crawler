@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.rediscache.domain.PopUpStoreInfo;
-import com.example.rediscache.repository.PopUpStoreInfoRepository;
+import com.example.rediscache.repository.PopUpStoreRedisRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -19,25 +19,25 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/stores")
 public class StoreAPiController {
-	private final PopUpStoreInfoRepository popUpStoreInfoRepository;
+	private final PopUpStoreRedisRepository popUpStoreRedisRepository;
 
 	@GetMapping
 	Iterable<PopUpStoreInfo> getStoresInfo() {
-		return popUpStoreInfoRepository.findAll();
+		return popUpStoreRedisRepository.findAll();
 	}
 
 	@GetMapping("/{id}")
 	Optional<PopUpStoreInfo> getStoreById(@PathVariable Long id) {
-		return popUpStoreInfoRepository.findById(id);
+		return popUpStoreRedisRepository.findById(id);
 	}
 
 	@PostMapping
 	PopUpStoreInfo postStoreInfo(@RequestBody PopUpStoreInfo storeInfo) {
-		return popUpStoreInfoRepository.save(storeInfo);
+		return popUpStoreRedisRepository.save(storeInfo);
 	}
 
 	@DeleteMapping("{id}")
 	void deleteStoreInfo(@PathVariable Long id) {
-		popUpStoreInfoRepository.deleteById(id);
+		popUpStoreRedisRepository.deleteById(id);
 	}
 }
