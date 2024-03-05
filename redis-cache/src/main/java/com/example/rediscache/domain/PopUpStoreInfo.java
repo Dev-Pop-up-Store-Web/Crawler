@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @RedisHash(value = "store", timeToLive = 300)
 public class PopUpStoreInfo {
 	@Id
-	private Long id;
+	private String id;
 	private String name;
 	private String region;
 	private String address;

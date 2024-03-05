@@ -27,7 +27,7 @@ public class StoreAPiController {
 	}
 
 	@GetMapping("/{id}")
-	Optional<PopUpStoreInfo> getStoreById(@PathVariable Long id) {
+	Optional<PopUpStoreInfo> getStoreById(@PathVariable String id) {
 		return popUpStoreRedisRepository.findById(id);
 	}
 
@@ -37,7 +37,7 @@ public class StoreAPiController {
 	}
 
 	@DeleteMapping("{id}")
-	void deleteStoreInfo(@PathVariable Long id) {
+	void deleteStoreInfo(@PathVariable String id) {
 		popUpStoreRedisRepository.deleteById(id);
 	}
 }
