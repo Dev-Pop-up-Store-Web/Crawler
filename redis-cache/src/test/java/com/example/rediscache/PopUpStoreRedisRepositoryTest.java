@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.rediscache.domain.PopUpStoreInfo;
-import com.example.rediscache.repository.PopUpStoreInfoRepository;
+import com.example.rediscache.repository.PopUpStoreRedisRepository;
 
 @SpringBootTest
-public class PopUpStoreInfoRepositoryTest {
+public class PopUpStoreRedisRepositoryTest {
 
 	@Autowired
-	private PopUpStoreInfoRepository repo;
+	private PopUpStoreRedisRepository repo;
 
 	@Test
 	void saveTest() {
