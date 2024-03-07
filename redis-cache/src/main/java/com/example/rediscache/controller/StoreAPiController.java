@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.rediscache.domain.PopUpStoreInfo;
-import com.example.rediscache.repository.PopUpStoreRedisRepository;
+import com.example.rediscache.repository.redis.PopUpStoreRedisRepository;
 
 import lombok.AllArgsConstructor;
 
