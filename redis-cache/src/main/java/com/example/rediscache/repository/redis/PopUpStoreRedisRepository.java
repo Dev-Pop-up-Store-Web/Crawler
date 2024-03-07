@@ -1,4 +1,4 @@
-package com.example.rediscache.repository;
+package com.example.rediscache.repository.redis;
 
 import org.springframework.data.repository.CrudRepository;
 
