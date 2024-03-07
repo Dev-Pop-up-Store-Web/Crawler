@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "store", timeToLive = 300)
+@RedisHash(value = "store", timeToLive = 86400)
 @Document
 public class PopUpStoreInfo {
 	@Id
@@ -29,6 +29,7 @@ public class PopUpStoreInfo {
 	private int ticketPrice;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private LocalDate updatedDate;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private boolean parkingAvailability;
