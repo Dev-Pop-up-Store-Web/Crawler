@@ -15,8 +15,8 @@ import lombok.AllArgsConstructor;
 public class DataFetcher {
 	private final PopUpStoreMongoRepository popUpStoreMongoRepository;
 
-	public List<PopUpStoreInfo> findDataByDateField() {
+	public List<PopUpStoreInfo> findDataByModifiedDate() {
 		LocalDate date = LocalDate.now();
-		return popUpStoreMongoRepository.findByUpdatedDate(date);
+		return popUpStoreMongoRepository.findByModifiedDate(date);
 	}
 }

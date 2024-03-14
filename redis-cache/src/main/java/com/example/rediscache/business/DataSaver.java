@@ -17,9 +17,10 @@ class DataSaver {
 	private final PopUpStoreRedisRepository popUpStoreRedisRepository;
 	private final DataFetcher dataFetcher;
 
-	@Scheduled(cron = "0 0 * * *") // 매일 정각에 한 번 실행
+	// @Scheduled(cron = "0 0 * * * *") // 매일 정각에 한 번 실행
+	@Scheduled(cron = "10 * * * * *")
 	public void saveData() {
-		var newData = dataFetcher.findDataByDateField();
+		var newData = dataFetcher.findDataByModifiedDate();
 		popUpStoreRedisRepository.saveAll(newData);
 	}
 }
