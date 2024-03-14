@@ -4,36 +4,31 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.popup.image.Domain.Images;
-import com.popup.image.repository.ImagesRepository;
+import com.popup.image.Domain.PopUpStoreInfo;
+import com.popup.image.repository.PopUpStoreInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class ImageService {
-	private final ImagesRepository imagseRepository;
+	private final PopUpStoreInfoRepository popUpStoreInfoRepository;
 
-	// public Integer findImageById(Integer id){
-	// 	ObjectMapper objectMapper = new ObjectMapper();
-	// 	if (imageRepository.findById(String.valueOf(id)) == null){
-	// 		System.out.println("can't not find id");
-	// 	} else {
-	// 		return imageRepository.findById(String.valueOf(id));
-	// 	}
-	// 	return id;
-	// }
 	public void SaveImageUrls(List<String> urls, String id){
-		if(imagseRepository.findById(id).isPresent()){
-			System.out.println("url already exists in mongdb");
+		if(popUpStoreInfoRepository.findById(id).isPresent()){
+			System.out.println("Already Exists Id. Adding.... ");
+			PopUpStoreInfo PopUpStoreInfoSet = new PopUpStoreInfo();
+			PopUpStoreInfoSet = popUpStoreInfoRepository.findById(id).get();
+			PopUpStoreInfoSet.setUrls(urls);
+			popUpStoreInfoRepository.save(PopUpStoreInfoSet);
+			System.out.println("MongoDB Image Url Uploaded Completely ");
 		} else {
-			Images images = new Images();
-			images.setId(id);
-			images.setUrls(urls);
-			imagseRepository.save(images);
-			System.out.println(" MongoDB Image Url Uploaded Completely");
+			PopUpStoreInfo popUpStoreInfo = new PopUpStoreInfo();
+			popUpStoreInfo.setId(id);
+			popUpStoreInfo.setUrls(urls);
+			popUpStoreInfoRepository.save(popUpStoreInfo);
+			System.out.println(" New MongoDB Image Url Uploaded Completely");
 		}
 	}
 }
