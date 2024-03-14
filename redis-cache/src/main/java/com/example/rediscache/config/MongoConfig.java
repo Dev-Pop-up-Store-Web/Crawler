@@ -13,15 +13,21 @@ import com.mongodb.client.MongoClients;
 @Configuration
 public class MongoConfig {
 
-	@Value("${spring.data.mongodb.uri}")
-	private String mongoUri;
+	// @Value("${spring.data.mongodb.uri}")
+	// private String mongoUri;
+
+	@Value("${spring.data.mongodb.host}")
+	private String mongoHost;
+
+	@Value("${spring.data.mongodb.port}")
+	private int mongoPort;
 
 	@Value("${spring.data.mongodb.database}")
 	private String databaseName;
 
 	@Bean
 	public MongoClient mongoClient() {
-		return MongoClients.create(mongoUri);
+		return MongoClients.create(String.format("mongodb://%s:%d", mongoHost, mongoPort));
 	}
 
 	@Bean
