@@ -10,8 +10,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Document(collection = "infos")
 public class PopUpStoreInfo{
 
@@ -33,38 +35,4 @@ public class PopUpStoreInfo{
 	private LocalDateTime createdDate;
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
-
-		public PopUpStoreInfo(){
-			this.id = null;
-			this.name = null;
-			this.startDate = null;
-			this.endDate = null;
-			this.openTimes = null;
-			this.region = null;
-			this.address = null;
-			this.ticketPrice = -1;
-			this.snsUrl = null;
-			this.webUrl = null;
-			this.parkingAvailability = false;
-			this.createdDate = LocalDateTime.now();
-			this.urls = null;
-
-		}
-
-		public PopUpStoreInfo(String id, String name, LocalDate startDate, LocalDate endDate, List<String> openTimes, String region, String address, int ticketPrice, String snsUrl,
-		String webUrl, boolean parkingAvailability, List<String> urls) {
-		this.id = id;
-		this.name = name;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.openTimes = openTimes;
-		this.region = region;
-		this.address = address;
-		this.ticketPrice = ticketPrice;
-		this.snsUrl = snsUrl;
-		this.webUrl = webUrl;
-		this.parkingAvailability = parkingAvailability;
-		this.createdDate = LocalDateTime.now();
-		this.urls = urls;
-	}
 }
