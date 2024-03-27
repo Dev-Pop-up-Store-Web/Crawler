@@ -1,4 +1,4 @@
-package com.popup.image.Domain;
+package com.popup.image.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,11 +31,11 @@ public class PopUpStoreInfo {
 	private String snsUrl;
 	private String webUrl;
 	private boolean parkingAvailability;
+	private List<String> urls;
 
 	@CreatedDate
 	private LocalDateTime createdDate;
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
-	private List<String> urls;
 
 }

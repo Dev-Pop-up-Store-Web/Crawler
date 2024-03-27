@@ -1,4 +1,4 @@
-package com.popup.image.service;
+package com.popup.image.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Service;
 
+import com.popup.image.service.ImageService;
+import com.popup.image.service.S3Uploader;
+import com.popup.image.service.WebDriverManager;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CrawlerPopply {
+public class CrawlerController {
 	private static final String MAIN_PAGE_URL = "https://www.popply.co.kr/popup/1370";
 	private final WebDriver driver = WebDriverManager.initChromeDriver();
 	//private final HashMap<Integer, String> detailPageUrls = new HashMap<>();
