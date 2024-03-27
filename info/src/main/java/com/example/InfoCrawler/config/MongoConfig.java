@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
-@EnableMongoRepositories
+@EnableMongoRepositories(basePackages = "com.example.InfoCrawler.repository")
 @Configuration
 public class MongoConfig {
 
