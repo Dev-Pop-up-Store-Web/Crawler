@@ -1,7 +1,7 @@
 # 베이스 이미지로 JDK 17 포함된 이미지 사용
 #FROM openjdk:17 as build
 FROM openjdk:17.0-slim
-EXPOSE 9387
+EXPOSE 8888
 # 애플리케이션 디렉토리 설정
 WORKDIR /app
 

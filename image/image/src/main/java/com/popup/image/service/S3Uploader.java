@@ -1,19 +1,12 @@
 package com.popup.image.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-//import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -33,10 +26,10 @@ public class S3Uploader {
 	private S3Client s3Client;
 
 	@Value("${aws.s3.bucket}")
-	public String bucket;
+	private String bucket;
 
-	public String downloadAndUploadS3(String url, Integer page, Integer numbering){
-		String objectKey = page+"/image_"+numbering+".jpg";
+	public String downloadAndUploadS3(String url, Integer page, Integer numbering) {
+		String objectKey = page + "/image_" + numbering + ".jpg";
 		String publicUrl = ""; // 업로드된 객체의 URL을 저장할 변수
 
 		try {
@@ -45,25 +38,19 @@ public class S3Uploader {
 			try (InputStream in = new URL(url).openStream()) {
 				Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
 			}
+			/* 수정한 부분(s3 초기화 하는 부분을 아예 제거! + s3Client를 사용하도록 변경)*/
 
 			// S3에 업로드
-			try (S3Client s3 = S3Client.builder()
-				.region(Region.of("ap-northeast-2"))
-				.credentialsProvider(DefaultCredentialsProvider.create())
-				.build()) {
+			PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(bucket).key(objectKey).build();
 
-				PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-					.bucket(bucket)
-					.key(objectKey)
-					.build();
+			s3Client.putObject(putObjectRequest, RequestBody.fromFile(tempFile));
 
-				s3.putObject(putObjectRequest, RequestBody.fromFile(tempFile));
+			// 업로드된 객체의 URL을 가져옴
+			publicUrl = s3Client.utilities()
+				.getUrl(GetUrlRequest.builder().bucket(bucket).key(objectKey).build())
+				.toExternalForm();
 
-				// 업로드된 객체의 URL을 가져옴
-				publicUrl = s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucket).key(objectKey).build()).toExternalForm();
-
-				System.out.println("S3 Image uploaded successfully. url:"+publicUrl);
-			}
+			System.out.println("S3 Image uploaded successfully. url:" + publicUrl);
 
 			// 임시 파일 삭제
 			Files.delete(tempFile);

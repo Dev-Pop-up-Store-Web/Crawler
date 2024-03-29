@@ -38,11 +38,7 @@ public class CrawlerController {
 
 	// 2. 크롤링 할 정보 추출
 	private void getMainPageInfos() throws IOException, InterruptedException {
-		//var mainPageInfos = driver.findElement(By.className("popupdetail-title-info"));
-		//var mainPageInfos = driver.findElement(By.className("slide-img-wrap")).getText();
 		var mainPageInfos = driver.findElements(By.className("slide-content"));
-		//var mainPageInfos = driver.findElement(By.className("slide-content")).findElement(By.tagName("img")).getAttribute("src");
-			//.By.className("popupdetail-title-info").getText();
 		setPopUpStoreInfos(mainPageInfos);
 	}
 
@@ -64,19 +60,11 @@ public class CrawlerController {
 		setSaveS3ImageUrl(urls);
 	}
 
-	// 4. 상세 url 하나씩 접근
-	// private void getDetailInfos() {
-	// 	for (var detailPageUrlMap : detailPageUrls.entrySet()) {
-	// 		driver.get(detailPageUrlMap.getValue());
-	// 		setDetailInfos(detailPageUrlMap.getKey());
-	// 	}
-	// }
-
-	// 5. 이미지 S3 저장
+	// 4. 이미지 S3 저장
 	private void setSaveS3ImageUrl(List<String> urls) throws InterruptedException {
 		String publicUrl = "";
 		List<String> publicUrls = new ArrayList<>();
-		for (int i = 0; i < urls.size(); i++){ //String url : urls) {
+		for (int i = 0; i < urls.size(); i++){
 			publicUrl = s3Uploader.downloadAndUploadS3(urls.get(i), 1370,i);
 			publicUrls.add(publicUrl);
 			Thread.sleep(3000);

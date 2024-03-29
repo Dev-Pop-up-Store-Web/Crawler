@@ -38,13 +38,13 @@ public class WebDriverManager {
 
 				// windows
 			else if (osName.contains("win"))
-				serviceBuilder.usingDriverExecutable(new File("C:\\path\\to\\chromedriver.exe"));
+				serviceBuilder.usingDriverExecutable(new File("C:\\Users\\seol\\Downloads\\chromedriver\\chromedriver.exe"));
 
 				// docker container
 			else if (osName.contains("linux"))
 				serviceBuilder.usingDriverExecutable(new File("/usr/local/bin/chromedriver"));
 
-			ChromeDriverService service = serviceBuilder.usingPort(9387).build(); // -> 포트 다르게 설정
+			ChromeDriverService service = serviceBuilder.usingPort().build(); // -> 포트 다르게 설정
 			service.start();
 
 			ChromeOptions options = new ChromeOptions();
