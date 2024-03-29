@@ -1,11 +1,11 @@
-package com.example.InfoCrawler;
+package com.popup.info;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
-import com.example.InfoCrawler.service.CrawlerController;
+import com.popup.info.service.CrawlerController;
 
 import lombok.AllArgsConstructor;
 

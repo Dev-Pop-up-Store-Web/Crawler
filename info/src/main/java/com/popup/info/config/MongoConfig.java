@@ -1,4 +1,4 @@
-package com.example.InfoCrawler.config;
+package com.popup.info.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

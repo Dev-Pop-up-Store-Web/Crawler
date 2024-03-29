@@ -1,4 +1,4 @@
-package com.example.InfoCrawler.domain;
+package com.popup.info.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

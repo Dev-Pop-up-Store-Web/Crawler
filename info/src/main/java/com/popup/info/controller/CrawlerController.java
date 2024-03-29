@@ -1,4 +1,4 @@
-	package com.example.InfoCrawler.service;
+	package com.popup.info.controller;
 
 	import java.time.LocalDate;
 	import java.time.format.DateTimeFormatter;
@@ -11,11 +11,11 @@
 	import org.openqa.selenium.WebDriver;
 	import org.openqa.selenium.WebElement;
 	import org.springframework.beans.factory.annotation.Autowired;
-
 	import org.springframework.stereotype.Service;
 
-	import com.example.InfoCrawler.domain.PopUpStoreInfo;
-	import com.example.InfoCrawler.repository.InfoRepository;
+	import com.popup.info.domain.PopUpStoreInfo;
+	import com.popup.info.repository.InfoRepository;
+	import com.popup.info.service.WebDriverManager;
 
 	@Service
 	public class CrawlerController {

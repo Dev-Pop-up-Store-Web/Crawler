@@ -1,4 +1,4 @@
-package com.example.InfoCrawler.service;
+package com.popup.info.service;
 
 import java.io.File;
 
