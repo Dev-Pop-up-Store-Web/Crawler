@@ -71,7 +71,7 @@ public class CrawlerController {
 
 	// 5. 상세 데이터 저장
 	private void setDetailInfos(String key){
-		var detailsPageInfos = driver.findElements(By.className("slide-content"));
+		var detailsPageInfos = driver.findElements(By.className("slick-cloned"));
 		String publicUrl = "";
 		List<String> publicUrls = new ArrayList<>();
 		for (int i = 0; i < detailsPageInfos.size()-1; i++) {
