@@ -11,12 +11,18 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.transfer.MultipleFileUpload;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 
 @Slf4j
 @Service
@@ -38,7 +44,6 @@ public class S3Uploader {
 			try (InputStream in = new URL(url).openStream()) {
 				Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
 			}
-			/* 수정한 부분(s3 초기화 하는 부분을 아예 제거! + s3Client를 사용하도록 변경)*/
 
 			// S3에 업로드
 			PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(bucket).key(objectKey).build();
