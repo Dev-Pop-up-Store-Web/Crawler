@@ -1,7 +1,6 @@
 package com.popup.image.domain;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -34,8 +33,8 @@ public class PopUpStoreInfo {
 	private List<String> urls;
 
 	@CreatedDate
-	private LocalDateTime createdDate;
+	private LocalDate createdDate;
 	@LastModifiedDate
-	private LocalDateTime modifiedDate;
+	private LocalDate modifiedDate;
 
 }
