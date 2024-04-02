@@ -38,7 +38,8 @@ public class WebDriverManager {
 
 				// windows
 			else if (osName.contains("win"))
-				serviceBuilder.usingDriverExecutable(new File("C:\\path\\to\\chromedriver.exe"));
+				// serviceBuilder.usingDriverExecutable(new File("C:\\path\\to\\chromedriver.exe"));
+				serviceBuilder.usingDriverExecutable(new File("C:\\Users\\seol\\Downloads\\chromedriver\\chromedriver.exe"));
 
 				// docker container
 			else if (osName.contains("linux"))
@@ -50,7 +51,7 @@ public class WebDriverManager {
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--headless"); // headless 모드 활성화
 			options.addArguments("--no-sandbox"); // no-sandbox 옵션 추가
-			// options.addArguments("--disable-dev-shm-usage"); //  unknown error: session deleted because of page crash
+			options.addArguments("--disable-dev-shm-usage"); //  unknown error: session deleted because of page crash
 			// options.addArguments("--remote-debugging-pipe");
 
 			return new ChromeDriver(service, options);
