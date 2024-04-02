@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "store", timeToLive = 86400)
 @Document(collection = "infos")
 public class PopUpStoreInfo {
 
@@ -38,7 +37,7 @@ public class PopUpStoreInfo {
 	private List<String> urls;
 
 	@CreatedDate
-	private LocalDateTime createdDate;
+	private LocalDate createdDate;
 	@LastModifiedDate
-	private LocalDateTime modifiedDate;
+	private LocalDate modifiedDate;
 }
