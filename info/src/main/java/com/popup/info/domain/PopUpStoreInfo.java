@@ -32,7 +32,7 @@ public class PopUpStoreInfo{
 	private List<String> urls;
 
 	@CreatedDate
-	private LocalDateTime createdDate;
+	private LocalDate createdDate;
 	@LastModifiedDate
-	private LocalDateTime modifiedDate;
+	private LocalDate modifiedDate;
 }
