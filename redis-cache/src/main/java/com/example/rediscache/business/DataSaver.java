@@ -25,9 +25,11 @@ class DataSaver {
 	public void saveData() {
 		List<PopUpStoreInfo> newDataList = dataFetcher.findDataByModifiedDate();
 		newDataList.forEach(this::saveDataToRedis);
+		System.out.println("Saving Data to Redis is Finished");
 	}
 
 	private void saveDataToRedis(PopUpStoreInfo popUpStoreInfo) {
+		System.out.println("save Data To Redis !! ID is " + popUpStoreInfo.getId());
 		redisTemplate.opsForValue()
 			.set(RedisKeyGenerator.generateKey(popUpStoreInfo), popUpStoreInfo,
 				Duration.ofDays(redisCacheDurationDays));
