@@ -6,19 +6,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
-// import com.popup.info.domain.PopUpStoreInfo;
 import com.popupstore.info.PopUpStoreInfo;
 import com.popup.info.repository.InfoRepository;
 import com.popup.info.service.WebDriverManager;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class CrawlerController {
 
@@ -29,7 +31,7 @@ public class CrawlerController {
 	private HashMap<String, String> detailPageUrls = new HashMap<>();
 
 	@Autowired
-	private InfoRepository infoRepo;
+	InfoRepository infoRepo;
 
 	// 0. 크롤링 시작
 	public void startCrawling() {
@@ -83,7 +85,7 @@ public class CrawlerController {
 		for (var detailPageUrl : detailPageUrls.entrySet()) {
 			driver.get(detailPageUrl.getValue());
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				System.out.println("Exception!");
 			}
@@ -93,6 +95,28 @@ public class CrawlerController {
 
 	// 5. 상세 데이터 저장
 	private void setDetailInfos(String key) {
+		if (infoRepo.findById(key).isPresent()) {
+			System.out.println("Already Exists Id..");
+			updateInfo(key);
+		} else {
+			System.out.println("Adding new Id..");
+			addNewInfo(key);
+		}
+	}
+
+	private void updateInfo(String key) {
+		PopUpStoreInfo infoToUpdate = popUpStoreInfos.get(key);
+		setCommonInfo(key, infoToUpdate);
+		infoRepo.save(infoToUpdate);
+	}
+
+	private void addNewInfo(String key) {
+		PopUpStoreInfo newInfo = new PopUpStoreInfo();
+		setCommonInfo(key, newInfo);
+		infoRepo.insert(newInfo);
+	}
+
+	private void setCommonInfo(String key, PopUpStoreInfo popUpStoreInfo) {
 		String address = driver.findElement(By.cssSelector(".location")).getText();
 		popUpStoreInfos.get(key).setAddress(address);
 
@@ -112,14 +136,8 @@ public class CrawlerController {
 				case "입장료 유료" -> popUpStoreInfos.get(key).setTicketPrice(100000);
 			}
 		}
-		// mongoDB에 데이터 저장
-		if (infoRepo.findById(key).isPresent()) {
-			System.out.println("Already Exists Id..");
-		}else {
-			System.out.println("Adding new Id..");
-			infoRepo.insert(popUpStoreInfos.get(key));
-		}
 	}
+
 
 	private static boolean isMatchingDatePattern(String dateString) {
 		try {
