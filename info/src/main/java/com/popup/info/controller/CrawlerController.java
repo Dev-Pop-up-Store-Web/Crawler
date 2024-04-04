@@ -95,19 +95,20 @@ public class CrawlerController {
 
 	// 5. 상세 데이터 저장
 	private void setDetailInfos(String key) {
-		if (infoRepo.findById(key).isPresent()) {
+		PopUpStoreInfo existingInfo = infoRepo.findById(key).orElse(null);
+
+		if (existingInfo != null) {
 			System.out.println("Already Exists Id..");
-			updateInfo(key);
+			updateInfo(key, existingInfo);
 		} else {
 			System.out.println("Adding new Id..");
 			addNewInfo(key);
 		}
 	}
 
-	private void updateInfo(String key) {
-		PopUpStoreInfo infoToUpdate = popUpStoreInfos.get(key);
-		setCommonInfo(key, infoToUpdate);
-		infoRepo.save(infoToUpdate);
+	private void updateInfo(String key, PopUpStoreInfo existingInfo) {
+		setCommonInfo(key, existingInfo);	// 새로운 데이터 추가
+		infoRepo.save(existingInfo);	// 기존 데이터 업데이트
 	}
 
 	private void addNewInfo(String key) {
