@@ -38,13 +38,13 @@ public class WebDriverManager {
 			else if (osName.contains("linux"))
 				serviceBuilder.usingDriverExecutable(new File("/usr/local/bin/chromedriver"));
 
-			ChromeDriverService service = serviceBuilder.usingPort(9516).build(); // -> 포트 다르게 설정
+			ChromeDriverService service = serviceBuilder.usingPort(9514).build(); // -> 포트 다르게 설정
 			service.start();
 
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--headless"); // headless 모드 활성화
 			options.addArguments("--no-sandbox"); // no-sandbox 옵션 추가
-			// options.addArguments("--disable-dev-shm-usage"); //  unknown error: session deleted because of page crash
+			options.addArguments("--disable-dev-shm-usage"); //  unknown error: session deleted because of page crash
 			// options.addArguments("--remote-debugging-pipe");
 
 			return new ChromeDriver(service, options);

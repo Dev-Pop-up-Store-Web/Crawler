@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.popupstore.info.PopUpStoreInfo;
 import com.popup.info.repository.InfoRepository;
 import com.popup.info.service.WebDriverManager;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,13 +26,12 @@ public class CrawlerController {
 	// 크롤링할 대상 url (가장 상위 페이지)
 	private static final String MAIN_PAGE_URL = "https://www.popply.co.kr/popup?area=all";
 	private final WebDriver driver = WebDriverManager.initChromeDriver();
-	private HashMap<String, PopUpStoreInfo> popUpStoreInfos = new HashMap<>();
 	private HashMap<String, String> detailPageUrls = new HashMap<>();
 
-	@Autowired
-	InfoRepository infoRepo;
+	private final InfoRepository infoRepo;
 
 	// 0. 크롤링 시작
+	@PostConstruct
 	public void startCrawling() {
 		setCrawler();
 		getMainPageInfos();
@@ -58,30 +56,17 @@ public class CrawlerController {
 			PopUpStoreInfo data = new PopUpStoreInfo();
 			WebElement item = items.get(i);
 
-			String[] date = item.findElement(By.cssSelector(".popup-date")).getText().split(" - ");
-			LocalDate startDate = isMatchingDatePattern(date[0]) ? LocalDate.parse(date[0], DateTimeFormatter.ofPattern("yy.MM.dd", Locale.KOREAN)) : null;
-			LocalDate endDate = isMatchingDatePattern(date[1]) ? LocalDate.parse(date[1], DateTimeFormatter.ofPattern("yy.MM.dd", Locale.KOREAN)) : null;
-
-			String name = item.findElement(By.cssSelector(".popup-name")).getText();
 			String href = item.findElement(By.cssSelector("a.popup-img-wrap")).getAttribute("href");
 			String id = href.substring(href.lastIndexOf('/') + 1);
-			String region = item.findElement(By.cssSelector(".popup-location")).getText().split(" ")[1];
-
-			data.setId(id);
-			data.setName(name);
-			data.setStartDate(startDate);
-			data.setEndDate(endDate);
-			data.setRegion(region);
 
 			detailPageUrls.put(id, href);
-			popUpStoreInfos.put(id, data);
 
 		}
-		getDetailInfos();
+		getDetailUrls();
 	}
 
 	// 4. 상세 url 하나씩 접근
-	private void getDetailInfos() {
+	private void getDetailUrls() {
 		for (var detailPageUrl : detailPageUrls.entrySet()) {
 			driver.get(detailPageUrl.getValue());
 			try {
@@ -96,49 +81,69 @@ public class CrawlerController {
 	// 5. 상세 데이터 저장
 	private void setDetailInfos(String key) {
 		PopUpStoreInfo existingInfo = infoRepo.findById(key).orElse(null);
-
 		if (existingInfo != null) {
-			System.out.println("Already Exists Id..");
-			updateInfo(key, existingInfo);
+			if (existingInfo.getName() == null) {
+				// image 데이터만 적재
+				System.out.println("Already Exists Id..");
+				updateInfo(key, existingInfo);
+			} else {
+				// info 데이터 적재 완료
+				System.out.println("Data Already Exists in MongoDB");
+				return;
+			}
 		} else {
 			System.out.println("Adding new Id..");
 			addNewInfo(key);
 		}
 	}
 
+	// 5-1. 이미 데이터가 존재하는 경우 업데이트
 	private void updateInfo(String key, PopUpStoreInfo existingInfo) {
-		setCommonInfo(key, existingInfo);	// 새로운 데이터 추가
+		setDetailInfos(key, existingInfo);	// 새로운 데이터 추가
 		infoRepo.save(existingInfo);	// 기존 데이터 업데이트
 	}
 
+	// 5-2. 새로운 데이터 추가
 	private void addNewInfo(String key) {
 		PopUpStoreInfo newInfo = new PopUpStoreInfo();
-		setCommonInfo(key, newInfo);
+		setDetailInfos(key, newInfo);
 		infoRepo.insert(newInfo);
 	}
 
-	private void setCommonInfo(String key, PopUpStoreInfo popUpStoreInfo) {
+	private void setDetailInfos(String key, PopUpStoreInfo popUpStoreInfo) {
+		String name = driver.findElement(By.cssSelector(".tit")).getText();
+
+		String[] date = driver.findElement(By.cssSelector(".date")).getText().split(" - ");
+		LocalDate startDate = isMatchingDatePattern(date[0]) ? LocalDate.parse(date[0], DateTimeFormatter.ofPattern("yy.MM.dd", Locale.KOREAN)) : null;
+		LocalDate endDate = isMatchingDatePattern(date[1]) ? LocalDate.parse(date[1], DateTimeFormatter.ofPattern("yy.MM.dd", Locale.KOREAN)) : null;
+
 		String address = driver.findElement(By.cssSelector(".location")).getText();
-		popUpStoreInfos.get(key).setAddress(address);
+		String region = address.split(" ")[1];
+
+		popUpStoreInfo.setId(key);
+		popUpStoreInfo.setName(name);
+		popUpStoreInfo.setStartDate(startDate);
+		popUpStoreInfo.setEndDate(endDate);
+		popUpStoreInfo.setAddress(address);
+		popUpStoreInfo.setRegion(region);
 
 		var openHoursElements = driver.findElements(By.cssSelector(".popupdetail-time > ul > li"));
 		List<String> openHours = new ArrayList<>();
 		for (int i = 1; i < 8; i++) {
 			openHours.add(openHoursElements.get(i).getText());
 		}
-		popUpStoreInfos.get(key).setOpenTimes(openHours);
+		popUpStoreInfo.setOpenTimes(openHours);
 
 		var liElements = driver.findElements(By.cssSelector(".popupdetail-icon-area > ul > li:not(.false)"));
 		for (WebElement liElement : liElements) {
 			switch (liElement.getText()) {
-				case "주차가능" -> popUpStoreInfos.get(key).setParkingAvailability(true);
-				case "주차불가" -> popUpStoreInfos.get(key).setParkingAvailability(false);
-				case "입장료 무료" -> popUpStoreInfos.get(key).setTicketPrice(-1);
-				case "입장료 유료" -> popUpStoreInfos.get(key).setTicketPrice(100000);
+				case "주차가능" -> popUpStoreInfo.setParkingAvailability(true);
+				case "주차불가" -> popUpStoreInfo.setParkingAvailability(false);
+				case "입장료 무료" -> popUpStoreInfo.setTicketPrice(-1);
+				case "입장료 유료" -> popUpStoreInfo.setTicketPrice(100000);
 			}
 		}
 	}
-
 
 	private static boolean isMatchingDatePattern(String dateString) {
 		try {
