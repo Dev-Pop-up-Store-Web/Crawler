@@ -15,14 +15,19 @@ public class ImageService {
 	private final InfoRepository infoRepository;
 
 	public void SaveImageUrls(List<String> urls, String id){
-		if(infoRepository.findById(id).isPresent()){
+		if(infoRepository.findById(id).isPresent()) {
 			System.out.println("Already Exists Id.. Adding.... ");
 			PopUpStoreInfo PopUpStoreInfoSet = new PopUpStoreInfo();
 			PopUpStoreInfoSet = infoRepository.findById(id).get();
-			PopUpStoreInfoSet.setUrls(urls);
-			infoRepository.save(PopUpStoreInfoSet);
-			System.out.println("MongoDB Image Url Uploaded Completely ");
-		} else {
+
+			if(PopUpStoreInfoSet.getUrls().isEmpty()){
+				System.out.println("MongoDB Image Url is Empty ");
+				PopUpStoreInfoSet.setUrls(urls);
+				infoRepository.save(PopUpStoreInfoSet);
+				System.out.println("MongoDB Image Url Uploaded Completely ");
+			}
+		}
+		else {
 			System.out.println("Adding new Id..");
 			PopUpStoreInfo popUpStoreInfo = new PopUpStoreInfo();
 			popUpStoreInfo.setId(id);
