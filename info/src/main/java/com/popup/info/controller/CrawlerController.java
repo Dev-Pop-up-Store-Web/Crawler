@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Service;
 
-import com.popupstore.info.PopUpStoreInfo;
+import com.popup.info.domain.PopUpStoreInfo;
 import com.popup.info.repository.InfoRepository;
 import com.popup.info.service.WebDriverManager;
 

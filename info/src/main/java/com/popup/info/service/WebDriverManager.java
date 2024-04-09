@@ -38,7 +38,7 @@ public class WebDriverManager {
 			else if (osName.contains("linux"))
 				serviceBuilder.usingDriverExecutable(new File("/usr/local/bin/chromedriver"));
 
-			ChromeDriverService service = serviceBuilder.usingPort(9514).build(); // -> 포트 다르게 설정
+			ChromeDriverService service = serviceBuilder.usingPort(9512).build(); // -> 포트 다르게 설정
 			service.start();
 
 			ChromeOptions options = new ChromeOptions();
