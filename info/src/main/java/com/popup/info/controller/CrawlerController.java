@@ -82,7 +82,7 @@ public class CrawlerController {
 	private void setDetailInfos(String key) {
 		PopUpStoreInfo existingInfo = infoRepo.findById(key).orElse(null);
 		if (existingInfo != null) {
-			if (existingInfo.getName() == null) {
+			if (existingInfo.getUrls() == null) {
 				// image 데이터만 적재
 				System.out.println("Already Exists Id..");
 				updateInfo(key, existingInfo);
