@@ -12,10 +12,6 @@ import com.mongodb.client.MongoClients;
 @EnableMongoRepositories(basePackages = "com.example.rediscache.repository.mongo")
 @Configuration
 public class MongoConfig {
-
-	// @Value("${spring.data.mongodb.uri}")
-	// private String mongoUri;
-
 	@Value("${spring.data.mongodb.host}")
 	private String mongoHost;
 
