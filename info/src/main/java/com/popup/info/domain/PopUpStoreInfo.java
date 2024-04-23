@@ -26,6 +26,7 @@ public class PopUpStoreInfo {
 	private List<String> openTimes;
 	private String region;
 	private String address;
+	private List<String> hashtags;
 	private int ticketPrice;
 	private String snsUrl;
 	private String webUrl;

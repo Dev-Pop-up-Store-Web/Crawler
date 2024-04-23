@@ -120,6 +120,13 @@ public class CrawlerController {
 		String address = driver.findElement(By.cssSelector(".location")).getText();
 		String region = address.split(" ")[1];
 
+		var tags = driver.findElements(By.cssSelector(".popupdetail-title-info > .search-box-inner > ul > li"));
+		List<String> hashtags = new ArrayList<>();
+		for (int i = 0; i < tags.size(); i++) {
+			hashtags.add(tags.get(i).getText());
+		}
+		popUpStoreInfo.setHashtags(hashtags);
+
 		popUpStoreInfo.setId(key);
 		popUpStoreInfo.setName(name);
 		popUpStoreInfo.setStartDate(startDate);
